@@ -1,0 +1,12 @@
+{
+  "Group": "me.simon",
+  "Name": "Discord-Linker",
+  "Version": "0.0.1",
+  "Description": "A plugin to link discord",
+  "Website": "https://github.com/Simon-Weij/Discord-Linker-Hytale",
+  "Main": "me.simon.plugin.Discord-Linker",
+  "ServerVersion": "*",
+  "Dependencies": {},
+  "OptionalDependencies": {},
+  "DisabledByDefault": false
+}
