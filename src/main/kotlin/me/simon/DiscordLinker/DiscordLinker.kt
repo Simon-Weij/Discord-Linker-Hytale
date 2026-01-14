@@ -1,19 +1,15 @@
-package com.example.templateplugin
-
-/**
- * Main plugin class.
- * 
- * TODO: Implement your plugin logic here.
- * 
- * @author YourName
- * @version 1.0.0
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-class TemplatePlugin {
+
+package me.simon.DiscordLinker
+
+
+class DiscordLinker {
     companion object {
-        /**
-         * Get plugin instance.
-         */
-        lateinit var instance: TemplatePlugin
+        lateinit var instance: DiscordLinker
             private set
     }
 
