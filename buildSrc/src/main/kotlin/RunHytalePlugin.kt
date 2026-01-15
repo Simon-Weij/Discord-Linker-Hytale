@@ -57,11 +57,13 @@ open class RunServerTask : DefaultTask() {
         }
 
         // Copy plugin JAR to plugins folder
-        project.tasks.findByName("shadowJar")?.outputs?.files?.firstOrNull()?.let { shadowJar ->
-            val targetFile = File(pluginsDir, shadowJar.name)
-            shadowJar.copyTo(targetFile, overwrite = true)
+        val shadowJarTask = project.tasks.findByName("shadowJar") as? org.gradle.api.tasks.bundling.Jar
+        val shadowJarFile = shadowJarTask?.archiveFile?.get()?.asFile
+        if (shadowJarFile?.exists() == true) {
+            val targetFile = File(pluginsDir, shadowJarFile.name)
+            shadowJarFile.copyTo(targetFile, overwrite = true)
             println("Plugin copied to: ${targetFile.absolutePath}")
-        } ?: run {
+        } else {
             println("WARNING: Could not find shadowJar output")
         }
 
@@ -77,7 +79,7 @@ open class RunServerTask : DefaultTask() {
             println("Debug mode enabled. Connect debugger to port 5005")
         }
         
-        javaArgs.addAll(listOf("-jar", jarFile.name, "--assets", "Assets.zip", "--allow-op"))
+        javaArgs.addAll(listOf("-cp", "plugins/*:${jarFile.name}", "com.hypixel.hytale.Main", "--assets", "Assets.zip", "--allow-op"))
 
         // Start the server process
         val javaExecutable = if (System.getProperty("os.name").lowercase().contains("windows")) "jre/bin/java.exe" else "jre/bin/java"

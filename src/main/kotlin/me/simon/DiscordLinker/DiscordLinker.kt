@@ -6,45 +6,32 @@
 
 package me.simon.DiscordLinker
 
+import com.hypixel.hytale.logger.HytaleLogger
+import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent
+import com.hypixel.hytale.server.core.plugin.JavaPlugin
+import com.hypixel.hytale.server.core.plugin.JavaPluginInit
+import javax.annotation.Nonnull
 
-class DiscordLinker {
+
+class DiscordLinker (@Nonnull init: JavaPluginInit) : JavaPlugin(init) {
     companion object {
         lateinit var instance: DiscordLinker
+        var LOGGER: HytaleLogger = HytaleLogger.forEnclosingClass()
             private set
     }
 
-    /**
-     * Constructor - Called when plugin is loaded.
-     */
     init {
         instance = this
-        println("[TemplatePlugin] Plugin loaded!")
+        println("[DiscordLinker] Plugin loaded!")
     }
 
-    /**
-     * Called when plugin is enabled.
-     */
-    fun onEnable() {
-        println("[TemplatePlugin] Plugin enabled!")
-
-
-        // TODO: Initialize your plugin here
-        // - Load configuration
-        // - Register event listeners
-        // - Register commands
-        // - Start services
+    override fun setup() {
+        this.eventRegistry
+            .registerGlobal<String?, PlayerChatEvent?>(PlayerChatEvent::class.java, PlayerChat::onPlayerChat)
+        LOGGER.atSevere().log("DiscordLinker started")
     }
 
-    /**
-     * Called when plugin is disabled.
-     */
-    fun onDisable() {
-        println("[TemplatePlugin] Plugin disabled!")
-
-
-        // TODO: Cleanup your plugin here
-        // - Save data
-        // - Stop services
-        // - Close connections
+    override fun start() {
+        LOGGER.atSevere().log("DiscordLinker started!")
     }
 }
