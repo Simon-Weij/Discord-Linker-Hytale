@@ -1,14 +1,15 @@
+/*
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package me.simon.DiscordLinker
 
-import com.hypixel.hytale.server.core.Message
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent
-import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent
-import me.simon.DiscordLinker.DiscordLinker.Companion.LOGGER
-
 
 object PlayerChat {
-
     fun onPlayerChat(event: PlayerChatEvent) {
-        LOGGER.atSevere().log("Message send ${event.content} by ${event.sender}")
+        WebSocket.sendToAll("${event.sender.username}|${event.content}")
     }
 }

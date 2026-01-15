@@ -8,8 +8,10 @@ package me.simon.DiscordLinker
 
 import com.hypixel.hytale.logger.HytaleLogger
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent
+import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent
 import com.hypixel.hytale.server.core.plugin.JavaPlugin
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit
+import io.javalin.Javalin
 import javax.annotation.Nonnull
 
 
@@ -28,10 +30,15 @@ class DiscordLinker (@Nonnull init: JavaPluginInit) : JavaPlugin(init) {
     override fun setup() {
         this.eventRegistry
             .registerGlobal<String?, PlayerChatEvent?>(PlayerChatEvent::class.java, PlayerChat::onPlayerChat)
+        this.eventRegistry
+            .registerGlobal<String?, PlayerReadyEvent?>(PlayerReadyEvent::class.java, PlayerTracker::onPlayerJoin)
+
         LOGGER.atSevere().log("DiscordLinker started")
     }
 
     override fun start() {
         LOGGER.atSevere().log("DiscordLinker started!")
+        val app = Javalin.create().start(7070)
+        WebSocket.registerWebsocket(app)
     }
 }

@@ -20,7 +20,9 @@ repositories {
 dependencies {
     // Hytale Server API (provided by server at runtime)
     compileOnly(files("libs/HytaleServer.jar"))
-    
+
+    implementation("io.javalin:javalin:6.7.0")
+
     // Common dependencies (will be bundled in JAR)
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     // Optional: uncomment if you are not familiar with kotlinx.serialization
