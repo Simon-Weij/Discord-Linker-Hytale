@@ -13,5 +13,6 @@ object PlayerTracker {
     val players = arrayListOf<Player>()
     fun onPlayerJoin(event: PlayerReadyEvent){
         players.add(event.player)
+        WebSocket.sendToAll("${event.player.displayName} joined!")
     }
 }

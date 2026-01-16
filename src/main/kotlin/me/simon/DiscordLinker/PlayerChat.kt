@@ -7,9 +7,14 @@
 package me.simon.DiscordLinker
 
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent
+import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent
 
 object PlayerChat {
     fun onPlayerChat(event: PlayerChatEvent) {
-        WebSocket.sendToAll("${event.sender.username}|${event.content}")
+        WebSocket.sendToAll("${event.sender.username}: ${event.content}")
+    }
+
+    fun onPlayerReady(event: PlayerReadyEvent){
+        WebSocket.sendToAll("${event.player} joined!")
     }
 }

@@ -9,11 +9,25 @@ package me.simon.DiscordLinker
 import com.hypixel.hytale.server.core.Message
 import io.javalin.Javalin
 import io.javalin.websocket.WsContext
+import java.io.File
+import java.io.FileInputStream
+import java.util.Properties
 import java.util.concurrent.ConcurrentHashMap
 
 object WebSocket {
 
-    private val sessions: MutableSet<WsContext> = ConcurrentHashMap.newKeySet()
+    private val sessions: MutableSet<WsContext> = ConcurrentHashMap.newKeySet<WsContext>()
+
+    private val token: String by lazy {
+        val file = File("server.properties")
+        if (file.exists()) {
+            val props = Properties()
+            FileInputStream(file).use { props.load(it) }
+            props.getProperty("token", "")
+        } else {
+            ""
+        }
+    }
 
     fun add(ctx: WsContext) {
         sessions.add(ctx)
@@ -34,8 +48,14 @@ object WebSocket {
     fun registerWebsocket(app: Javalin) {
         app.ws("/discordlinker/ws") { ws ->
             ws.onConnect { ctx ->
-                add(ctx)
-                DiscordLinker.LOGGER.atInfo().log("Connected: ${ctx.session}")
+                val queryToken = ctx.queryParam("token")
+                if (queryToken == token) {
+                    add(ctx)
+                    DiscordLinker.LOGGER.atInfo().log("Connected: ${ctx.session}")
+                } else {
+                    ctx.session.close()
+                    DiscordLinker.LOGGER.atInfo().log("Connection rejected: invalid token")
+                }
             }
 
             ws.onClose { ctx ->
@@ -53,7 +73,6 @@ object WebSocket {
                 for (player in PlayerTracker.players){
                     player.sendMessage(Message.raw(msg))
                 }
-                ctx.send("Echo: ${ctx.message()}")
             }
         }
     }
