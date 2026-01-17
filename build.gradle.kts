@@ -8,9 +8,9 @@ plugins {
     id("io.kotest") version "6.0.7"
 }
 
-group = findProperty("pluginGroup") as String? ?: "com.example"
-version = findProperty("pluginVersion") as String? ?: "1.0.0"
-description = findProperty("pluginDescription") as String? ?: "A Hytale plugin template"
+group = findProperty("pluginGroup") as String? ?: "me.Simon"
+version = findProperty("pluginVersion") as String? ?: "0.0.1"
+description = findProperty("pluginDescription") as String? ?: "A simple and lightweight way to link your discord server and hytale server"
 
 repositories {
     mavenLocal()
